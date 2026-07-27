@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://github.com/Rudraksh-2025/DataCollection",
+  "homepage": "https://github.com/sinewdatalabs/datacollection",
   "scripts": {
     "dev": "vite",
     "start": "vite",
