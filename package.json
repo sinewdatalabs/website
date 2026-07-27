@@ -1,9 +1,9 @@
 {
-  "name": "datacollection",
+  "name": "website",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://github.com/sinewdatalabs/datacollection",
+  "homepage": "https://github.com/sinewdatalabs/website",
   "scripts": {
     "dev": "vite",
     "start": "vite",
