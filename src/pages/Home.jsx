@@ -75,11 +75,12 @@ export default function Home() {
   };
 
   const verticals = [
-    'Home & hospitality',
-    'Healthcare',
-    'Skilled trades',
-    'Logistics & inspection',
-    'Food service',
+    { label: 'Healthcare & elder care', highlight: true },
+    { label: 'Tactile gloves & assistive devices', highlight: true },
+    { label: 'Home & hospitality' },
+    { label: 'Skilled trades' },
+    { label: 'Logistics & inspection' },
+    { label: 'Food service' },
   ];
 
   return (
@@ -251,21 +252,33 @@ export default function Home() {
       <Box id="verticals" sx={{ py: { xs: 10, md: 14 }, backgroundColor: '#f3f3f0', borderTop: '1px solid #e4e4e1', borderBottom: '1px solid #e4e4e1' }}>
         <Container maxWidth="lg">
           <RevealSection selector=".vert-reveal" once y={24}>
-            <Box className="vert-reveal" sx={{ mb: 6, maxWidth: '760px' }}>
+            <Box className="vert-reveal" sx={{ mb: 3, maxWidth: '760px' }}>
               <Eyebrow index="04" label="Verticals" />
               <Typography
                 variant="h2"
-                sx={{ color: '#171717', fontFamily: displayFont, fontWeight: 500, fontSize: { xs: '1.7rem', md: '2.3rem' }, lineHeight: 1.3 }}
+                sx={{ color: '#171717', fontFamily: displayFont, fontWeight: 500, fontSize: { xs: '1.7rem', md: '2.3rem' }, lineHeight: 1.3, mb: 3 }}
               >
                 Manipulation is everywhere. So are we.
               </Typography>
+              <Typography sx={{ color: '#54544f', fontFamily: bodyFont, fontSize: '1.02rem', lineHeight: 1.8 }}>
+                Our near-term focus is healthcare: elder care, caregiving support, and tactile gloves and other assistive devices, where force and contact data is hardest to get and matters most.
+              </Typography>
             </Box>
 
-            <Stack direction="row" spacing={1.5} className="vert-reveal" sx={{ flexWrap: 'wrap', rowGap: 1.5 }}>
+            <Stack direction="row" spacing={1.5} className="vert-reveal" sx={{ flexWrap: 'wrap', rowGap: 1.5, mt: 3 }}>
               {verticals.map((vert) => (
-                <Box key={vert} sx={{ px: 2.5, py: 1.25, border: '1px solid #e4e4e1', borderRadius: '6px', backgroundColor: '#ffffff' }}>
-                  <Typography sx={{ fontWeight: 600, color: '#171717', fontFamily: bodyFont, fontSize: '0.95rem' }}>
-                    {vert}
+                <Box
+                  key={vert.label}
+                  sx={{
+                    px: 2.5,
+                    py: 1.25,
+                    border: vert.highlight ? '1px solid #171717' : '1px solid #e4e4e1',
+                    borderRadius: '6px',
+                    backgroundColor: vert.highlight ? '#171717' : '#ffffff',
+                  }}
+                >
+                  <Typography sx={{ fontWeight: 600, color: vert.highlight ? '#fafaf8' : '#171717', fontFamily: bodyFont, fontSize: '0.95rem' }}>
+                    {vert.label}
                   </Typography>
                 </Box>
               ))}
@@ -274,12 +287,37 @@ export default function Home() {
         </Container>
       </Box>
 
-      {/* 6. Team */}
+      {/* 6. Dataset */}
+      <Box id="dataset" sx={{ py: { xs: 10, md: 14 }, backgroundColor: '#f3f3f0', borderTop: '1px solid #e4e4e1', borderBottom: '1px solid #e4e4e1' }}>
+        <Container maxWidth="lg">
+          <RevealSection selector=".dataset-reveal" once y={24}>
+            <Box className="dataset-reveal" sx={{ maxWidth: '760px' }}>
+              <Eyebrow index="05" label="Dataset" />
+              <Typography
+                variant="h2"
+                sx={{ color: '#171717', fontFamily: displayFont, fontWeight: 500, fontSize: { xs: '1.7rem', md: '2.3rem' }, lineHeight: 1.3, mb: 3 }}
+              >
+                Dataset
+              </Typography>
+              <Typography sx={{ color: '#54544f', fontFamily: bodyFont, fontSize: '1.02rem', lineHeight: 1.8, mb: 3 }}>
+                Our first multimodal manipulation dataset, built around healthcare and elder care tasks, is in progress.
+              </Typography>
+              <Box sx={{ display: 'inline-flex' }}>
+                <Typography sx={{ ...mono, color: '#171717', border: '1px solid #171717', borderRadius: '999px', px: 2, py: 0.75 }}>
+                  Coming soon
+                </Typography>
+              </Box>
+            </Box>
+          </RevealSection>
+        </Container>
+      </Box>
+
+      {/* 7. Team */}
       <Box id="team" sx={{ py: { xs: 10, md: 14 } }}>
         <Container maxWidth="lg">
           <RevealSection selector=".team-reveal" once y={24}>
             <Box className="team-reveal" sx={{ maxWidth: '760px', mb: 6 }}>
-              <Eyebrow index="05" label="Team" />
+              <Eyebrow index="06" label="Team" />
               <Typography
                 variant="h2"
                 sx={{ color: '#171717', fontFamily: displayFont, fontWeight: 500, fontSize: { xs: '1.7rem', md: '2.3rem' }, lineHeight: 1.3 }}
@@ -290,8 +328,8 @@ export default function Home() {
 
             <Grid container spacing={3}>
               {[
-                { initial: 'A', name: 'Aryan Shah', role: 'Co-founder & CEO' },
-                { initial: 'U', name: 'Umang Bhargav', role: 'Co-founder' },
+                { initial: 'A', name: 'Aryan Shah', role: 'Founder & CEO' },
+                { initial: 'U', name: 'Umang Bhargav', role: 'Co-founder & COO' },
               ].map((person) => (
                 <Grid size={{ xs: 12, sm: 6 }} className="team-reveal" key={person.name}>
                   <Card sx={{ height: '100%', textAlign: 'center' }}>
@@ -332,8 +370,24 @@ export default function Home() {
             <Typography variant="h5" sx={{ color: '#fafaf8', fontFamily: displayFont, fontWeight: 500, fontSize: '1.6rem', mb: 1.5 }}>
               Get in touch
             </Typography>
-            <Typography sx={{ color: '#9c9c96', mb: 4, lineHeight: 1.6, fontSize: '0.95rem', fontFamily: bodyFont }}>
+            <Typography sx={{ color: '#9c9c96', mb: 1.5, lineHeight: 1.6, fontSize: '0.95rem', fontFamily: bodyFont }}>
               A small number of design partner and contributor slots are open right now.
+            </Typography>
+            <Typography
+              component="a"
+              href="mailto:sinew.datalabs@gmail.com"
+              sx={{
+                display: 'inline-block',
+                color: '#fafaf8',
+                mb: 4,
+                fontSize: '0.95rem',
+                fontFamily: bodyFont,
+                textDecoration: 'underline',
+                textUnderlineOffset: '3px',
+                '&:hover': { color: '#e4e4e1' },
+              }}
+            >
+              sinew.datalabs@gmail.com
             </Typography>
 
             {formStatus === 'success' ? (

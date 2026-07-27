@@ -22,6 +22,7 @@ const navLinks = [
   { title: 'Platform', targetId: 'platform' },
   { title: 'Data', targetId: 'data' },
   { title: 'Verticals', targetId: 'verticals' },
+  { title: 'Dataset', targetId: 'dataset' },
   { title: 'Team', targetId: 'team' },
 ];
 
@@ -251,6 +252,13 @@ export default function Layout() {
           >
             <Typography sx={{ fontFamily: "'Pixelify Sans', sans-serif", fontWeight: 500, color: '#171717', fontSize: '1rem' }}>
               {BRAND_NAME}
+            </Typography>
+            <Typography
+              component="a"
+              href="mailto:sinew.datalabs@gmail.com"
+              sx={{ ...monoLabel, color: '#8a8a85', textDecoration: 'none', '&:hover': { color: '#171717' } }}
+            >
+              sinew.datalabs@gmail.com
             </Typography>
             <Typography sx={{ ...monoLabel, color: '#8a8a85' }}>
               © {new Date().getFullYear()} {BRAND_NAME}
