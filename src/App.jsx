@@ -4,6 +4,8 @@ import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
 
 import Layout from './components/Layout';
 import Home from './pages/Home';
+import Blog from './pages/Blog';
+import BlogPipeline from './pages/BlogPipeline';
 
 const displayFont = "'Pixelify Sans', 'Inter', sans-serif";
 
@@ -99,6 +101,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
+            <Route path="blog" element={<Blog />} />
+            <Route path="blog/data-pipeline" element={<BlogPipeline />} />
             <Route path="*" element={<Home />} />
           </Route>
         </Routes>

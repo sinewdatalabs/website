@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Raw pipeline captures. Too large for GitHub (100MB/file limit) and for Pages.
+# The web-encoded versions served by the site live in public/videos/.
+src/assets/*.mp4
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

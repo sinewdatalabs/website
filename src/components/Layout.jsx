@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
   Box,
   Container,
@@ -34,12 +34,20 @@ const monoLabel = {
 
 export default function Layout() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isHome = location.pathname === '/';
+
+  // Sub-pages should open at the top rather than inheriting the previous scroll.
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [location.pathname]);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prev) => !prev);
   };
 
-  const handleScroll = (targetId) => {
+  const scrollToId = (targetId) => {
     const element = document.getElementById(targetId);
     if (element) {
       const yOffset = -70;
@@ -48,8 +56,24 @@ export default function Layout() {
     }
   };
 
+  // Section links live on the home page, so from a sub-page we route there first
+  // and scroll once the sections have mounted.
+  const handleScroll = (targetId) => {
+    if (isHome) {
+      scrollToId(targetId);
+      return;
+    }
+    navigate('/');
+    requestAnimationFrame(() => scrollToId(targetId));
+  };
+
   const handleNavClick = (targetId) => {
     handleScroll(targetId);
+    setMobileOpen(false);
+  };
+
+  const goToRoute = (path) => {
+    navigate(path);
     setMobileOpen(false);
   };
 
@@ -86,7 +110,7 @@ export default function Layout() {
           boxShadow: '0 6px 20px rgba(23, 23, 23, 0.06)',
         }}>
           <Typography
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onClick={() => (isHome ? window.scrollTo({ top: 0, behavior: 'smooth' }) : navigate('/'))}
             sx={{
               fontFamily: "'Pixelify Sans', sans-serif",
               fontWeight: 500,
@@ -123,6 +147,23 @@ export default function Layout() {
                 {link.title}
               </Button>
             ))}
+            <Button
+              onClick={() => goToRoute('/blog')}
+              sx={{
+                ...monoLabel,
+                color: location.pathname.startsWith('/blog') ? '#171717' : '#6b6b67',
+                px: 1.5,
+                py: 0.75,
+                borderRadius: '999px',
+                textTransform: 'uppercase',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                  color: '#171717',
+                },
+              }}
+            >
+              Blog
+            </Button>
           </Stack>
 
           <Button
@@ -219,6 +260,25 @@ export default function Layout() {
               {link.title}
             </Button>
           ))}
+          <Button
+            onClick={() => goToRoute('/blog')}
+            fullWidth
+            sx={{
+              ...monoLabel,
+              justifyContent: 'flex-start',
+              color: location.pathname.startsWith('/blog') ? '#171717' : '#6b6b67',
+              textTransform: 'uppercase',
+              px: 1.5,
+              py: 1.2,
+              borderRadius: '6px',
+              '&:hover': {
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                color: '#171717',
+              },
+            }}
+          >
+            Blog
+          </Button>
         </Stack>
 
         <Button
