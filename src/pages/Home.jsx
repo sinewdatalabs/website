@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Typography,
@@ -23,9 +23,6 @@ import {
 } from '@mui/icons-material';
 import TextReveal from '../components/TextReveal';
 import RevealSection from '../components/RevealSection';
-// Three.js is a heavy dependency only the hero needs, split into its own
-// chunk instead of shipping it on every route.
-const GripperViewer = lazy(() => import('../components/GripperViewer'));
 import { PixelMailIcon } from '../components/PixelIcons';
 
 const mono = {
@@ -101,95 +98,66 @@ export default function Home() {
       <Box sx={{
         position: 'relative',
         backgroundColor: '#131211',
-        py: { xs: 10, md: 14 },
+        py: { xs: 12, md: 16 },
         borderBottom: '1px solid #1f1e1c',
         overflow: 'hidden',
       }}>
-        <Box sx={{
-          position: 'absolute',
-          inset: 0,
-          background: 'radial-gradient(ellipse 70% 60% at 70% 30%, rgba(70,66,60,0.35) 0%, transparent 65%)',
-          pointerEvents: 'none',
-        }} />
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-          <Stack
-            direction={{ xs: 'column', md: 'row' }}
-            spacing={{ xs: 6, md: 4 }}
-            sx={{ alignItems: 'center' }}
-          >
-            <Stack spacing={4} sx={{ maxWidth: '560px', flexShrink: 0 }}>
-              <Typography sx={{ ...mono, color: '#6e6e69' }}>
-                Physical AI data infrastructure
-              </Typography>
+          <Stack spacing={4} sx={{ maxWidth: '780px', mx: 'auto', textAlign: 'center', alignItems: 'center' }}>
+            <Typography sx={{ ...mono, color: '#6e6e69', mx: 'auto' }}>
+              Physical AI data infrastructure
+            </Typography>
 
-              <TextReveal variant="fade-up" duration={0.7} stagger={0.05} scroller={false}>
-                <Typography
-                  variant="h1"
+            <TextReveal variant="fade-up" duration={0.7} stagger={0.05} scroller={false}>
+              <Typography
+                variant="h1"
+                sx={{
+                  color: '#fafaf8',
+                  fontSize: { xs: '2.1rem', sm: '3rem', md: '3.6rem' },
+                  fontWeight: 500,
+                  fontFamily: displayFont,
+                  lineHeight: 1.25,
+                }}
+              >
+                The data layer for robots that can touch the world.
+              </Typography>
+            </TextReveal>
+
+            <Fade in timeout={900} style={{ transitionDelay: '250ms' }}>
+              <Typography
+                sx={{
+                  color: '#9c9c96',
+                  fontFamily: bodyFont,
+                  fontWeight: 400,
+                  lineHeight: 1.7,
+                  fontSize: { xs: '1rem', sm: '1.1rem' },
+                  maxWidth: '620px',
+                  mx: 'auto',
+                }}
+              >
+                Vision, depth, motion, and force, captured at the scale physical AI needs.
+              </Typography>
+            </Fade>
+
+            <Fade in timeout={900} style={{ transitionDelay: '450ms' }}>
+              <Box sx={{ display: 'flex', justifyContent: 'center', pt: 1.5 }}>
+                <Button
+                  onClick={() => handleScrollTo('contact')}
                   sx={{
-                    color: '#fafaf8',
-                    fontSize: { xs: '2.1rem', sm: '2.7rem', md: '3.1rem' },
+                    backgroundColor: '#fafaf8',
+                    color: '#131211',
+                    borderRadius: '6px',
+                    px: 3.5,
+                    py: 1.4,
+                    fontSize: '0.92rem',
                     fontWeight: 500,
-                    fontFamily: displayFont,
-                    lineHeight: 1.25,
+                    '&:hover': { backgroundColor: '#e4e4e1' },
                   }}
                 >
-                  The data layer for robots that can touch the world.
-                </Typography>
-              </TextReveal>
-
-              <Fade in timeout={900} style={{ transitionDelay: '250ms' }}>
-                <Typography
-                  sx={{
-                    color: '#9c9c96',
-                    fontFamily: bodyFont,
-                    fontWeight: 400,
-                    lineHeight: 1.7,
-                    fontSize: { xs: '1rem', sm: '1.1rem' },
-                  }}
-                >
-                  Vision, depth, motion, and force, captured at the scale physical AI needs.
-                </Typography>
-              </Fade>
-
-              <Fade in timeout={900} style={{ transitionDelay: '450ms' }}>
-                <Box sx={{ display: 'flex', pt: 1 }}>
-                  <Button
-                    onClick={() => handleScrollTo('contact')}
-                    sx={{
-                      backgroundColor: '#fafaf8',
-                      color: '#131211',
-                      borderRadius: '6px',
-                      px: 3.5,
-                      py: 1.4,
-                      fontSize: '0.92rem',
-                      fontWeight: 500,
-                      '&:hover': { backgroundColor: '#e4e4e1' },
-                    }}
-                  >
-                    Get in touch
-                  </Button>
-                </Box>
-              </Fade>
-            </Stack>
-
-            <Box
-              sx={{
-                width: '100%',
-                height: { xs: 320, md: 440 },
-                border: '1px solid #2a2926',
-                borderRadius: '12px',
-                backgroundColor: 'rgba(255,255,255,0.02)',
-                position: 'relative',
-                overflow: 'hidden',
-              }}
-            >
-              <Suspense fallback={null}>
-                <GripperViewer />
-              </Suspense>
-              <Typography sx={{ ...mono, position: 'absolute', bottom: 12, left: 14, color: '#6e6e69', fontSize: '0.68rem' }}>
-                Drag to rotate
-              </Typography>
-            </Box>
+                  Get in touch
+                </Button>
+              </Box>
+            </Fade>
           </Stack>
         </Container>
       </Box>

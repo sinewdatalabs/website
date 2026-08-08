@@ -2,7 +2,6 @@ import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, Button, Container, Divider, Stack, Typography } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
-import GloveDiagram from '../components/GloveDiagram';
 import { getPost } from '../data/posts';
 
 const mono = {
@@ -157,14 +156,6 @@ export default function BlogTactile() {
               its own. It only becomes useful once you can ask what the hand looked like at the exact instant the
               grip tightened.
             </Typography>
-            <Typography sx={bodyText}>
-              Below is that eight-pad layout. The numbers are illustrative rather than a real capture, but the
-              positions and the idea are exactly what ships: a force reading per pad, synced to everything else
-              in the take.
-            </Typography>
-
-            <GloveDiagram />
-
             {/* 02 */}
             <SectionHeading index="02 / Why this is the hard part">
               Anyone can point a camera. Almost nobody wires a glove.
