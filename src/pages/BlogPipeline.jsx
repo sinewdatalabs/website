@@ -47,11 +47,15 @@ function SectionHeading({ index, children }) {
   );
 }
 
+// Retargeting output/writeup is pulled from the live post for now. The section
+// stays in place below, just gated off, so it's easy to bring back later.
+const SHOW_RETARGETING = false;
+
 const stages = [
   { label: 'Camera pose', detail: '6-DoF trajectory, metric, world frame' },
   { label: 'Hand tracking', detail: '21 keypoints per hand, depth-backed' },
   { label: 'Depth', detail: 'Confidence-masked metric depth' },
-  { label: 'Retargeting', detail: 'Parallel-jaw gripper poses' },
+  ...(SHOW_RETARGETING ? [{ label: 'Retargeting', detail: 'Parallel-jaw gripper poses' }] : []),
 ];
 
 export default function BlogPipeline() {
@@ -110,11 +114,10 @@ export default function BlogPipeline() {
               actually looks like.
             </Typography>
             <Typography sx={bodyText}>
-              A raw session on its own is barely anything, just RGB frames and some inertial data. What we
-              actually need is four things: where the camera was, where the hands were, how far away everything
-              is, and what a robot's gripper would have done in the same spot. That's what this pipeline turns
-              one take into, and because all four come from the same frame index, you can line them up and ask
-              what was happening at any single moment.
+              A raw session on its own is barely anything, just RGB frames and some inertial data.{' '}
+              {SHOW_RETARGETING
+                ? "What we actually need is four things: where the camera was, where the hands were, how far away everything is, and what a robot's gripper would have done in the same spot. That's what this pipeline turns one take into, and because all four come from the same frame index, you can line them up and ask what was happening at any single moment."
+                : "What we actually need is where the camera was, where the hands were, and how far away everything is. That's what this pipeline turns one take into, and because all three come from the same frame index, you can line them up and ask what was happening at any single moment."}
             </Typography>
 
             {/* Stage summary */}
@@ -216,35 +219,39 @@ export default function BlogPipeline() {
               caption="Source RGB alongside confidence-masked metric depth. Black regions are pixels rejected by the confidence mask; the colourbar is fixed across the sequence."
             />
 
-            {/* 04 */}
-            <SectionHeading index="04 / Retargeting">Turning a hand into something a robot could use.</SectionHeading>
-            <Typography sx={bodyText}>
-              None of the above is an action a robot can act on, a hand skeleton isn't a policy target. The last
-              step converts the tracked hand into a parallel-jaw gripper pose: a position, an orientation, and how
-              open the jaws are, per frame, plus the pose of whatever's being handled, so the grasp is defined
-              relative to the thing being grasped, not to some fixed point in the room.
-            </Typography>
-            <Typography sx={bodyText}>
-              We also paint my arms out of the render. What's left is a scene with the object and the gripper, but
-              not me, which is a lot closer to what a robot will actually see when it runs the policy, and it
-              keeps the model from latching onto human skin as a shortcut. This is the step that lets one take get
-              reused across different grippers without recapturing anything.
-            </Typography>
-            <VideoFigure
-              src={asset('gripper_render.mp4')}
-              poster={asset('gripper_render.jpg')}
-              label="Fig. 04"
-              caption="Retargeted parallel-jaw gripper poses with the demonstrator's arms inpainted out, alongside the tracked object. Axis triads mark each gripper frame."
-            />
+            {/* 04 — retargeting output/writeup, held back from the live post for now */}
+            {SHOW_RETARGETING && (
+              <>
+                <SectionHeading index="04 / Retargeting">Turning a hand into something a robot could use.</SectionHeading>
+                <Typography sx={bodyText}>
+                  None of the above is an action a robot can act on, a hand skeleton isn't a policy target. The last
+                  step converts the tracked hand into a parallel-jaw gripper pose: a position, an orientation, and how
+                  open the jaws are, per frame, plus the pose of whatever's being handled, so the grasp is defined
+                  relative to the thing being grasped, not to some fixed point in the room.
+                </Typography>
+                <Typography sx={bodyText}>
+                  We also paint my arms out of the render. What's left is a scene with the object and the gripper, but
+                  not me, which is a lot closer to what a robot will actually see when it runs the policy, and it
+                  keeps the model from latching onto human skin as a shortcut. This is the step that lets one take get
+                  reused across different grippers without recapturing anything.
+                </Typography>
+                <VideoFigure
+                  src={asset('gripper_render.mp4')}
+                  poster={asset('gripper_render.jpg')}
+                  label="Fig. 04"
+                  caption="Retargeted parallel-jaw gripper poses with the demonstrator's arms inpainted out, alongside the tracked object. Axis triads mark each gripper frame."
+                />
+              </>
+            )}
 
             {/* Close */}
-            <SectionHeading index="05 / What ships">One take, four things that actually line up.</SectionHeading>
+            <SectionHeading index={SHOW_RETARGETING ? '05 / What ships' : '04 / What ships'}>
+              {SHOW_RETARGETING ? 'One take, four things that actually line up.' : 'One take, three things that actually line up.'}
+            </SectionHeading>
             <Typography sx={bodyText}>
-              Every clip above is the same 1,933 frames of the same twenty minutes. That's really the whole
-              point, because pose, hands, depth, and gripper actions all share a frame index, you can ask what the
-              gripper was doing the exact moment my left hand was 0.67 m from the camera and get one answer,
-              instead of stitching together four recordings that drifted apart from each other somewhere along
-              the way.
+              {SHOW_RETARGETING
+                ? "Every clip above is the same 1,933 frames of the same twenty minutes. That's really the whole point, because pose, hands, depth, and gripper actions all share a frame index, you can ask what the gripper was doing the exact moment my left hand was 0.67 m from the camera and get one answer, instead of stitching together four recordings that drifted apart from each other somewhere along the way."
+                : "Every clip above is the same 1,933 frames of the same twenty minutes. That's really the whole point, because pose, hands, and depth all share a frame index, you can ask where my hands were relative to the camera at any single frame and get one answer, instead of stitching together recordings that drifted apart from each other somewhere along the way."}
             </Typography>
             <Typography sx={bodyText}>
               Sessions ship as bundles like this one, frame-synced, with the quality flags still attached, depth
