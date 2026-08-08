@@ -9,6 +9,7 @@ import Home from './pages/Home';
 // paint of the home page, so they're split into their own chunk.
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogPipeline = lazy(() => import('./pages/BlogPipeline'));
+const BlogTactile = lazy(() => import('./pages/BlogTactile'));
 
 const displayFont = "'Pixelify Sans', 'Inter', sans-serif";
 
@@ -107,6 +108,7 @@ function App() {
               <Route index element={<Home />} />
               <Route path="blog" element={<Blog />} />
               <Route path="blog/data-pipeline" element={<BlogPipeline />} />
+              <Route path="blog/tactile-sensing" element={<BlogTactile />} />
               <Route path="*" element={<Home />} />
             </Route>
           </Routes>

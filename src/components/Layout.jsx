@@ -14,6 +14,7 @@ import {
   Close as CloseIcon,
   ChevronRight,
 } from '@mui/icons-material';
+import { PixelMailIcon } from './PixelIcons';
 
 const BRAND_NAME = 'Sinew';
 
@@ -311,13 +312,22 @@ export default function Layout() {
             <Typography sx={{ fontFamily: "'Pixelify Sans', sans-serif", fontWeight: 500, color: '#171717', fontSize: '1rem' }}>
               {BRAND_NAME}
             </Typography>
-            <Typography
+            <Box
               component="a"
               href="mailto:sinew.datalabs@gmail.com"
-              sx={{ ...monoLabel, color: '#6b6b67', textDecoration: 'none', '&:hover': { color: '#171717' } }}
+              sx={{
+                ...monoLabel,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 0.75,
+                color: '#6b6b67',
+                textDecoration: 'none',
+                '&:hover': { color: '#171717' },
+              }}
             >
+              <PixelMailIcon />
               sinew.datalabs@gmail.com
-            </Typography>
+            </Box>
             <Typography sx={{ ...monoLabel, color: '#6b6b67' }}>
               © {new Date().getFullYear()} {BRAND_NAME}
             </Typography>

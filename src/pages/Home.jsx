@@ -23,7 +23,8 @@ import {
 } from '@mui/icons-material';
 import TextReveal from '../components/TextReveal';
 import RevealSection from '../components/RevealSection';
-import SensorField from '../components/SensorField';
+import HandField from '../components/HandField';
+import { PixelMonogram, PixelMailIcon } from '../components/PixelIcons';
 
 const mono = {
   fontFamily: "'IBM Plex Mono', monospace",
@@ -49,11 +50,18 @@ export default function Home() {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    setFormStatus('submitting');
-    setTimeout(() => {
-      setFormStatus('success');
-      e.target.reset();
-    }, 1200);
+    const data = new FormData(e.target);
+    const name = data.get('name')?.toString().trim() || '';
+    const email = data.get('email')?.toString().trim() || '';
+    const message = data.get('message')?.toString().trim() || '';
+
+    // No backend on a static site, so this hands off to the visitor's own
+    // mail client with the message pre-filled rather than faking a submit.
+    const subject = `Get in touch — ${name || 'New inquiry'}`;
+    const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
+    window.location.href = `mailto:sinew.datalabs@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    setFormStatus('opened');
   };
 
   const handleScrollTo = (id) => {
@@ -97,7 +105,7 @@ export default function Home() {
       }}>
         {/* A point field that brightens near the cursor, standing in for the
             depth/contact sensing the site is actually about, instead of a photo. */}
-        <SensorField />
+        <HandField />
         <Box sx={{
           position: 'absolute',
           inset: 0,
@@ -304,7 +312,7 @@ export default function Home() {
               <Stack direction="row" spacing={2.5} sx={{ alignItems: 'baseline', flexWrap: 'wrap' }}>
                 <Typography sx={{ ...mono, mb: 0 }}>05 / Dataset</Typography>
                 <Typography sx={{ color: '#54544f', fontFamily: bodyFont, fontSize: '0.98rem', lineHeight: 1.7 }}>
-                  Our first dataset, built around healthcare and elder care tasks, is in progress.
+                  Our first dataset is built around humans doing daily tasks, to train robots for home and elder care.
                 </Typography>
               </Stack>
               <Box sx={{ display: 'inline-flex', flexShrink: 0 }}>
@@ -359,10 +367,9 @@ export default function Home() {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
+                        color: '#171717',
                       }}>
-                        <Typography sx={{ fontFamily: displayFont, fontWeight: 500, fontSize: '1.5rem', color: '#171717' }}>
-                          {person.initial}
-                        </Typography>
+                        <PixelMonogram letter={person.initial} sx={{ width: 30, height: 30 }} />
                       </Box>
                       <Typography variant="h6" sx={{ mb: 0.5, fontWeight: 600, color: '#171717', fontFamily: bodyFont, fontSize: '1.05rem' }}>
                         {person.name}
@@ -434,14 +441,13 @@ export default function Home() {
             <Typography variant="h5" sx={{ color: '#fafaf8', fontFamily: displayFont, fontWeight: 500, fontSize: '1.6rem', mb: 1.5 }}>
               Get in touch
             </Typography>
-            <Typography sx={{ color: '#9c9c96', mb: 1.5, lineHeight: 1.6, fontSize: '0.95rem', fontFamily: bodyFont }}>
-              A small number of design partner and contributor slots are open right now.
-            </Typography>
-            <Typography
+            <Box
               component="a"
               href="mailto:sinew.datalabs@gmail.com"
               sx={{
-                display: 'inline-block',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 0.75,
                 color: '#fafaf8',
                 mb: 4,
                 fontSize: '0.95rem',
@@ -451,27 +457,30 @@ export default function Home() {
                 '&:hover': { color: '#e4e4e1' },
               }}
             >
+              <PixelMailIcon sx={{ color: '#9c9c96' }} />
               sinew.datalabs@gmail.com
-            </Typography>
+            </Box>
 
-            {formStatus === 'success' ? (
+            {formStatus === 'opened' ? (
               <Fade in>
                 <Alert
                   icon={<CheckCircle fontSize="inherit" />}
                   severity="success"
                   sx={{ borderRadius: '6px', backgroundColor: 'rgba(52, 211, 153, 0.08)', color: '#34d399', border: '1px solid rgba(52, 211, 153, 0.2)', textAlign: 'left' }}
                 >
-                  Thanks, that's been received. We'll be in touch soon.
+                  Opening your email app with this pre-filled, hit send there to reach us. If nothing opens,
+                  email us directly at sinew.datalabs@gmail.com.
                 </Alert>
               </Fade>
             ) : (
               <form onSubmit={handleFormSubmit}>
                 <Stack spacing={2}>
-                  <TextField fullWidth required label="Name" variant="outlined" sx={inputSx} />
-                  <TextField fullWidth required type="email" label="Email" variant="outlined" sx={inputSx} />
+                  <TextField fullWidth required name="name" label="Name" variant="outlined" sx={inputSx} />
+                  <TextField fullWidth required type="email" name="email" label="Email" variant="outlined" sx={inputSx} />
                   <TextField
                     fullWidth
                     required
+                    name="message"
                     label="What are you interested in?"
                     placeholder="e.g. training data for a manipulation policy, or joining as a contributor"
                     multiline
@@ -481,7 +490,6 @@ export default function Home() {
                   />
                   <Button
                     type="submit"
-                    disabled={formStatus === 'submitting'}
                     endIcon={<Send sx={{ fontSize: 16 }} />}
                     sx={{
                       py: 1.3,
@@ -490,10 +498,9 @@ export default function Home() {
                       color: '#131211',
                       fontWeight: 500,
                       '&:hover': { backgroundColor: '#e4e4e1' },
-                      '&.Mui-disabled': { backgroundColor: 'rgba(255,255,255,0.25)', color: 'rgba(0,0,0,0.4)' },
                     }}
                   >
-                    {formStatus === 'submitting' ? 'Submitting...' : 'Get in touch'}
+                    Get in touch
                   </Button>
                 </Stack>
               </form>
