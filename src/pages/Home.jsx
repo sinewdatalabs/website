@@ -18,6 +18,8 @@ import {
   Sensors,
   AccessibilityNew,
   Hub,
+  LinkedIn,
+  Language,
 } from '@mui/icons-material';
 import TextReveal from '../components/TextReveal';
 import RevealSection from '../components/RevealSection';
@@ -328,8 +330,19 @@ export default function Home() {
 
             <Grid container spacing={3}>
               {[
-                { initial: 'A', name: 'Aryan Shah', role: 'Founder & CEO' },
-                { initial: 'U', name: 'Umang Bhargav', role: 'Co-founder & COO' },
+                {
+                  initial: 'A',
+                  name: 'Aryan Shah',
+                  role: 'Founder & CEO',
+                  linkedin: 'https://www.linkedin.com/in/aryan-shah-03b5b0229/',
+                  portfolio: 'https://aryanshah.work/',
+                },
+                {
+                  initial: 'U',
+                  name: 'Umang Bhargav',
+                  role: 'Co-founder & COO',
+                  linkedin: 'https://www.linkedin.com/in/umang-bhargav-9121a7229/',
+                },
               ].map((person) => (
                 <Grid size={{ xs: 12, sm: 6 }} className="team-reveal" key={person.name}>
                   <Card sx={{ height: '100%', textAlign: 'center' }}>
@@ -351,9 +364,57 @@ export default function Home() {
                       <Typography variant="h6" sx={{ mb: 0.5, fontWeight: 600, color: '#171717', fontFamily: bodyFont, fontSize: '1.05rem' }}>
                         {person.name}
                       </Typography>
-                      <Typography sx={{ ...mono }}>
+                      <Typography sx={{ ...mono, mb: 1.75 }}>
                         {person.role}
                       </Typography>
+                      <Stack direction="row" spacing={1} sx={{ justifyContent: 'center' }}>
+                        {person.linkedin ? (
+                          <Box
+                            component="a"
+                            href={person.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`${person.name} on LinkedIn`}
+                            sx={{
+                              width: 32,
+                              height: 32,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              borderRadius: '50%',
+                              border: '1px solid #e4e4e1',
+                              color: '#6b6b67',
+                              transition: 'color 0.15s ease, border-color 0.15s ease',
+                              '&:hover': { color: '#171717', borderColor: '#c4c4c0' },
+                            }}
+                          >
+                            <LinkedIn sx={{ fontSize: 16 }} />
+                          </Box>
+                        ) : null}
+                        {person.portfolio ? (
+                          <Box
+                            component="a"
+                            href={person.portfolio}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`${person.name}'s portfolio`}
+                            sx={{
+                              width: 32,
+                              height: 32,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              borderRadius: '50%',
+                              border: '1px solid #e4e4e1',
+                              color: '#6b6b67',
+                              transition: 'color 0.15s ease, border-color 0.15s ease',
+                              '&:hover': { color: '#171717', borderColor: '#c4c4c0' },
+                            }}
+                          >
+                            <Language sx={{ fontSize: 16 }} />
+                          </Box>
+                        ) : null}
+                      </Stack>
                     </CardContent>
                   </Card>
                 </Grid>

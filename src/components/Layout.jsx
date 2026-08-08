@@ -18,9 +18,7 @@ import {
 const BRAND_NAME = 'Sinew';
 
 const navLinks = [
-  { title: 'Problem', targetId: 'problem' },
   { title: 'Platform', targetId: 'platform' },
-  { title: 'Data', targetId: 'data' },
   { title: 'Verticals', targetId: 'verticals' },
   { title: 'Dataset', targetId: 'dataset' },
   { title: 'Team', targetId: 'team' },

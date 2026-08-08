@@ -103,15 +103,18 @@ export default function BlogPipeline() {
         <Container maxWidth="lg">
           <Box sx={{ maxWidth: '780px' }}>
             <Typography sx={bodyText}>
-              Everything below comes from a single capture: one person dicing vegetables at a kitchen counter,
-              recorded from a head-mounted camera. No staging, no mocap suit, no instrumented cell. That is the
-              point, the pipeline has to work on the messy takes, because those are the ones that scale.
+              Everything in this post comes from one recording: me, a head-mounted camera, and a cutting board.
+              No mocap suit, no rig, no lab, just a normal kitchen counter and about twenty minutes of dicing
+              vegetables the way anyone actually would. That's on purpose. If the pipeline only holds up on a
+              clean, staged take, it's not much use to us, because messy and ordinary is most of what this data
+              actually looks like.
             </Typography>
             <Typography sx={bodyText}>
-              A raw session is just RGB frames and IMU. What a policy needs is something else entirely: where the
-              observer was, where the hands were, how far away the scene was, and what an actual robot would have
-              had to do. Those four products are what the pipeline emits, and they are all derived from the same
-              frame index, so any two of them can be read together at any timestamp.
+              A raw session on its own is barely anything, just RGB frames and some inertial data. What we
+              actually need is four things: where the camera was, where the hands were, how far away everything
+              is, and what a robot's gripper would have done in the same spot. That's what this pipeline turns
+              one take into, and because all four come from the same frame index, you can line them up and ask
+              what was happening at any single moment.
             </Typography>
 
             {/* Stage summary */}
@@ -150,18 +153,20 @@ export default function BlogPipeline() {
             </Box>
 
             {/* 01 */}
-            <SectionHeading index="01 / Camera pose">Where the observer was, in metres.</SectionHeading>
+            <SectionHeading index="01 / Camera pose">Figuring out where I actually was.</SectionHeading>
             <Typography sx={bodyText}>
-              The first thing we solve for is the camera itself. Visual-inertial odometry gives us a 6-DoF pose per
-              frame in a gravity-aligned world frame, and because the solution is inertially scaled, the translation
-              is in real metres rather than an arbitrary unit. That distinction matters more than it sounds: without
-              metric scale, none of the downstream products can be compared against a robot's actual reach.
+              The first problem is boring but non-negotiable: we need to know exactly where the camera was, every
+              frame, in real units. Visual-inertial odometry gets us a 6-DoF pose per frame in a gravity-aligned
+              frame, and because it's scaled against the inertial data, the numbers come out in actual metres, not
+              some unit that only means something relative to itself. That matters more than it sounds like it
+              should, because none of what comes later, reach, grip distance, any of it, means anything if it isn't
+              in real-world scale.
             </Typography>
             <Typography sx={bodyText}>
-              The overlay shows the full path in grey, the path travelled so far in green, and the camera frustum in
-              yellow, with position and Euler angles printed per frame. On this take the wearer covers about a metre
-              and a half of counter while the head pitches down toward the board, exactly the kind of motion that
-              breaks naive frame-to-frame tracking.
+              In the clip below, grey is the full path, green is what's been covered so far, and the yellow
+              frustum is wherever the camera happened to be pointing. I cover about a metre and a half of counter
+              over the take, and watching it back, my head dips toward the board more than I would have guessed,
+              which is exactly the kind of motion that trips up simpler frame-to-frame tracking.
             </Typography>
             <VideoFigure
               src={asset('camera_pose_motion.mp4')}
@@ -171,18 +176,18 @@ export default function BlogPipeline() {
             />
 
             {/* 02 */}
-            <SectionHeading index="02 / Hand tracking">Twenty-one keypoints, and an honest confidence signal.</SectionHeading>
+            <SectionHeading index="02 / Hand tracking">Two hands, twenty-one points each, no faking it.</SectionHeading>
             <Typography sx={bodyText}>
-              Both hands are tracked at 21 keypoints each, per frame, with a handedness label and a detection
-              confidence. On its own that is 2D. What makes it usable for manipulation is fusing each keypoint
-              against the depth stream so the skeleton lands at a real distance from the camera, here roughly
-              0.66 to 0.67 m for both wrists.
+              Both hands get tracked at 21 keypoints, every frame, tagged with which hand it is and how confident
+              the model is. On its own that's just a flat skeleton. What makes it useful is fusing each point
+              against the depth stream so it lands somewhere real in space, here both wrists sit around 0.66 to
+              0.67 metres from the camera, which checks out for someone standing over a counter.
             </Typography>
             <Typography sx={bodyText}>
-              We render the fusion state directly rather than hiding it. A filled keypoint means depth came back for
-              that pixel; a hollow one means it did not, usually a thin finger edge or a specular patch on the blade.
-              Downstream consumers get that flag too, so a training run can weight or drop uncertain joints instead
-              of silently learning from an interpolated guess.
+              We don't hide the parts where it doesn't work. A solid dot means depth came back clean for that
+              point; a hollow one means it didn't, usually a thin finger edge or light bouncing oddly off the
+              blade. That flag ships with the data too, so whoever's training on it can down-weight or drop a
+              shaky joint instead of quietly trusting an interpolated guess.
             </Typography>
             <VideoFigure
               src={asset('hand_tracking_motion.mp4')}
@@ -192,17 +197,17 @@ export default function BlogPipeline() {
             />
 
             {/* 03 */}
-            <SectionHeading index="03 / Depth">Dense depth, masked by confidence.</SectionHeading>
+            <SectionHeading index="03 / Depth">Depth you can trust, because we throw out what you can't.</SectionHeading>
             <Typography sx={bodyText}>
-              The depth stream is metric and per-pixel, and we mask it by the sensor's own confidence channel before
-              anything else consumes it. The colourbar is absolute, not normalised per frame, so the same colour
-              means the same distance across the whole sequence, and the counter surface stays a flat plane in the
-              visualisation instead of pulsing as the head moves.
+              Depth is metric and per-pixel, and before anything touches it, we mask it against the sensor's own
+              confidence channel. The colour scale is fixed across the whole clip rather than renormalised frame
+              to frame, so the same colour always means the same distance, watch the counter and it stays a flat,
+              boring plane instead of shifting colour every time my head moves.
             </Typography>
             <Typography sx={bodyText}>
-              We log coverage per frame, on this clip about 97.7% of pixels survive the confidence mask at a median
-              scene distance of 1.55 m. Coverage is one of the quality gates a session has to clear before it goes
-              into a delivered dataset; takes that drop below threshold get flagged rather than shipped.
+              We log how much of each frame survives that mask. On this clip it's about 97.7%, at a median scene
+              distance of 1.55 m. That coverage number is one of the things we actually gate on before a session
+              ships, drop below threshold and the take gets flagged instead of quietly going out the door.
             </Typography>
             <VideoFigure
               src={asset('depth_map.mp4')}
@@ -212,19 +217,18 @@ export default function BlogPipeline() {
             />
 
             {/* 04 */}
-            <SectionHeading index="04 / Retargeting">From a human hand to something a robot can execute.</SectionHeading>
+            <SectionHeading index="04 / Retargeting">Turning a hand into something a robot could use.</SectionHeading>
             <Typography sx={bodyText}>
-              A hand skeleton is not an action label. The last stage converts tracked hands into end-effector poses
-              for a parallel-jaw gripper: a position, an orientation, and an opening width per frame, plus the
-              manipulated object's pose so the grasp is expressed relative to the thing being grasped rather than to
-              the room.
+              None of the above is an action a robot can act on, a hand skeleton isn't a policy target. The last
+              step converts the tracked hand into a parallel-jaw gripper pose: a position, an orientation, and how
+              open the jaws are, per frame, plus the pose of whatever's being handled, so the grasp is defined
+              relative to the thing being grasped, not to some fixed point in the room.
             </Typography>
             <Typography sx={bodyText}>
-              The render also inpaints the human arms out of the frame. That leaves an observation which shows the
-              scene and the gripper but not the demonstrator, which is much closer to what a robot will actually see
-              at execution time, and it stops a policy from anchoring on human skin as a visual cue. This is the step
-              that makes a capture embodiment-agnostic: the same take can be retargeted again for a different
-              manipulator without recollecting anything.
+              We also paint my arms out of the render. What's left is a scene with the object and the gripper, but
+              not me, which is a lot closer to what a robot will actually see when it runs the policy, and it
+              keeps the model from latching onto human skin as a shortcut. This is the step that lets one take get
+              reused across different grippers without recapturing anything.
             </Typography>
             <VideoFigure
               src={asset('gripper_render.mp4')}
@@ -234,17 +238,18 @@ export default function BlogPipeline() {
             />
 
             {/* Close */}
-            <SectionHeading index="05 / What ships">One take, four aligned products.</SectionHeading>
+            <SectionHeading index="05 / What ships">One take, four things that actually line up.</SectionHeading>
             <Typography sx={bodyText}>
-              All four clips above are the same 1,933 frames of the same take, which is the property that makes the
-              data worth anything. Because pose, hands, depth, and gripper actions share a frame index, a consumer
-              can ask what the gripper was doing at the moment the left hand was 0.67 m from the camera and get a
-              consistent answer, rather than stitching together four recordings that drifted apart.
+              Every clip above is the same 1,933 frames of the same twenty minutes. That's really the whole
+              point, because pose, hands, depth, and gripper actions all share a frame index, you can ask what the
+              gripper was doing the exact moment my left hand was 0.67 m from the camera and get one answer,
+              instead of stitching together four recordings that drifted apart from each other somewhere along
+              the way.
             </Typography>
             <Typography sx={bodyText}>
-              Sessions ship as frame-synchronized bundles with the per-frame quality flags intact, depth coverage,
-              tracking confidence, and pose continuity, so you can filter on quality before training rather than
-              discovering the bad segments afterwards.
+              Sessions ship as bundles like this one, frame-synced, with the quality flags still attached, depth
+              coverage, tracking confidence, how stable the pose was, so whoever's using it can filter for quality
+              before training instead of finding the bad stretches the hard way, after.
             </Typography>
 
             <Box
@@ -259,10 +264,11 @@ export default function BlogPipeline() {
                 variant="h3"
                 sx={{ color: '#fafaf8', fontFamily: displayFont, fontWeight: 500, fontSize: '1.35rem', mb: 1.5 }}
               >
-                Want a sample bundle?
+                Want to see a full bundle?
               </Typography>
               <Typography sx={{ color: '#9c9c96', fontFamily: bodyFont, fontSize: '0.98rem', lineHeight: 1.7, mb: 3 }}>
-                We are onboarding a small number of design partners for the first healthcare and elder care dataset.
+                We're bringing on a handful of design partners for the first healthcare and elder care dataset.
+                If that's useful to you, say hi.
               </Typography>
               <Button
                 component="a"
