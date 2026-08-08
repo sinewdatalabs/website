@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Sinew</title>
+  <script>
+    // GitHub Pages has no server-side rewrite, so a deep link like /website/blog
+    // lands here. Encode the requested path into a query string and bounce to
+    // index.html, which hands it back to the router before first paint.
+    // pathSegmentsToKeep is 1 because the site is served from /website/.
+    (function () {
+      var pathSegmentsToKeep = 1;
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
+    })();
+  </script>
+</head>
+
+<body></body>
+
+</html>
