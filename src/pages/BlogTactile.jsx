@@ -3,6 +3,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Box, Button, Container, Divider, Stack, Typography } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 import GloveDiagram from '../components/GloveDiagram';
+import ContourArt from '../components/ContourArt';
 import { getPost } from '../data/posts';
 
 const mono = {
@@ -164,6 +165,12 @@ export default function BlogTactile() {
             </Typography>
 
             <GloveDiagram />
+
+            <Typography sx={bodyText}>
+              And here's the same six pressure points with the diagram stripped away, just the field they'd
+              trace across the hand if you let it run.
+            </Typography>
+            <ContourArt />
 
             {/* 02 */}
             <SectionHeading index="02 / Why this is the hard part">

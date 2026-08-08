@@ -23,8 +23,8 @@ import {
 } from '@mui/icons-material';
 import TextReveal from '../components/TextReveal';
 import RevealSection from '../components/RevealSection';
-import HandField from '../components/HandField';
-import { PixelMonogram, PixelMailIcon } from '../components/PixelIcons';
+import DepthField from '../components/DepthField';
+import { PixelCharacter, PixelMailIcon } from '../components/PixelIcons';
 
 const mono = {
   fontFamily: "'IBM Plex Mono', monospace",
@@ -103,9 +103,9 @@ export default function Home() {
         borderBottom: '1px solid #1f1e1c',
         overflow: 'hidden',
       }}>
-        {/* A point field that brightens near the cursor, standing in for the
-            depth/contact sensing the site is actually about, instead of a photo. */}
-        <HandField />
+        {/* A depth-map mesh that warps and brightens as the cursor moves
+            over it, echoing the depth channel described below. */}
+        <DepthField />
         <Box sx={{
           position: 'absolute',
           inset: 0,
@@ -316,7 +316,18 @@ export default function Home() {
                 </Typography>
               </Stack>
               <Box sx={{ display: 'inline-flex', flexShrink: 0 }}>
-                <Typography sx={{ ...mono, color: '#171717', border: '1px solid #171717', borderRadius: '999px', px: 2, py: 0.75 }}>
+                <Typography
+                  sx={{
+                    ...mono,
+                    fontSize: '0.85rem',
+                    fontWeight: 700,
+                    color: '#fafaf8',
+                    backgroundColor: '#171717',
+                    borderRadius: '999px',
+                    px: 2.75,
+                    py: 1,
+                  }}
+                >
                   Coming soon
                 </Typography>
               </Box>
@@ -342,14 +353,12 @@ export default function Home() {
             <Grid container spacing={3}>
               {[
                 {
-                  initial: 'A',
                   name: 'Aryan Shah',
                   role: 'Founder & CEO',
                   linkedin: 'https://www.linkedin.com/in/aryan-shah-03b5b0229/',
                   portfolio: 'https://aryanshah.work/',
                 },
                 {
-                  initial: 'U',
                   name: 'Umang Bhargav',
                   role: 'Co-founder & COO',
                   linkedin: 'https://www.linkedin.com/in/umang-bhargav-9121a7229/',
@@ -365,11 +374,11 @@ export default function Home() {
                         mb: 2.5,
                         border: '1px solid #171717',
                         display: 'flex',
-                        alignItems: 'center',
+                        alignItems: 'flex-end',
                         justifyContent: 'center',
                         color: '#171717',
                       }}>
-                        <PixelMonogram letter={person.initial} sx={{ width: 30, height: 30 }} />
+                        <PixelCharacter sx={{ mb: '3px' }} />
                       </Box>
                       <Typography variant="h6" sx={{ mb: 0.5, fontWeight: 600, color: '#171717', fontFamily: bodyFont, fontSize: '1.05rem' }}>
                         {person.name}

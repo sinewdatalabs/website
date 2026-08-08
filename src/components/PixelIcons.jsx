@@ -1,41 +1,32 @@
 import React from 'react';
 import { Box } from '@mui/material';
 
-// Same construction as public/favicon.svg: a handful of blocks on a 4px
-// module, crisp edges, monochrome. Initials instead of photos, so the team
-// section stays consistent with the brand mark instead of borrowing a
-// stock-avatar style from somewhere else.
-const GLYPHS = {
-  A: [
-    [16, 0, 4, 4],
-    [12, 4, 4, 4],
-    [20, 4, 4, 4],
-    [8, 8, 4, 8],
-    [24, 8, 4, 8],
-    [8, 16, 20, 4],
-    [8, 20, 4, 12],
-    [24, 20, 4, 12],
-  ],
-  U: [
-    [8, 4, 4, 24],
-    [24, 4, 4, 24],
-    [8, 28, 20, 4],
-  ],
-};
+// A small standing figure built the same way as public/favicon.svg: a
+// handful of blocks on a 4px module, crisp edges, monochrome. No likeness,
+// just a pixel character, so the team section stays consistent with the
+// brand mark instead of borrowing a stock-avatar style from somewhere else.
+const CHARACTER_BLOCKS = [
+  [12, 0, 16, 12], // head
+  [16, 12, 8, 4], // neck
+  [8, 16, 24, 20], // torso
+  [4, 16, 4, 16], // left arm
+  [32, 16, 4, 16], // right arm
+  [8, 36, 8, 20], // left leg
+  [24, 36, 8, 20], // right leg
+];
 
-export function PixelMonogram({ letter, sx }) {
-  const blocks = GLYPHS[letter] || [];
+export function PixelCharacter({ sx }) {
   return (
     <Box
       component="svg"
-      viewBox="0 0 36 36"
+      viewBox="0 0 40 56"
       shapeRendering="crispEdges"
-      sx={{ width: 28, height: 28, display: 'block', ...sx }}
+      sx={{ width: 24, height: 34, display: 'block', ...sx }}
     >
       <g fill="currentColor">
-        {blocks.map(([x, y, w, h], i) => (
-          // Blocks are a fixed constant per letter, never reordered, so the
-          // index is a stable key.
+        {CHARACTER_BLOCKS.map(([x, y, w, h], i) => (
+          // Blocks are a fixed constant, never reordered, so the index is a
+          // stable key.
           <rect key={i} x={x} y={y} width={w} height={h} />
         ))}
       </g>
