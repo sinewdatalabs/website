@@ -10,7 +10,7 @@ const mono = {
   fontSize: '0.78rem',
   letterSpacing: '0.06em',
   textTransform: 'uppercase',
-  color: '#8a8a85',
+  color: '#6b6b67',
 };
 
 const displayFont = "'Pixelify Sans', sans-serif";
@@ -71,14 +71,14 @@ export default function BlogPipeline() {
               component={RouterLink}
               to="/blog"
               startIcon={<ArrowBack sx={{ fontSize: 15 }} />}
-              sx={{ ...mono, color: '#8a8a85', px: 0, mb: 4, '&:hover': { backgroundColor: 'transparent', color: '#171717' } }}
+              sx={{ ...mono, px: 0, mb: 4, '&:hover': { backgroundColor: 'transparent', color: '#171717' } }}
             >
               All posts
             </Button>
 
             <Stack direction="row" spacing={2} sx={{ mb: 2.5, alignItems: 'baseline', flexWrap: 'wrap' }}>
               <Typography sx={{ ...mono }}>{post.dateLabel}</Typography>
-              <Typography sx={{ ...mono, color: '#b4b4b0' }}>{post.readingTime}</Typography>
+              <Typography sx={{ ...mono, color: '#8f8f89' }}>{post.readingTime}</Typography>
             </Stack>
 
             <Typography
@@ -139,7 +139,7 @@ export default function BlogPipeline() {
                     spacing={{ xs: 0.5, sm: 3 }}
                     sx={{ py: 1.5, alignItems: { xs: 'flex-start', sm: 'baseline' } }}
                   >
-                    <Typography sx={{ ...mono, color: '#b4b4b0', minWidth: '2.5rem' }}>
+                    <Typography sx={{ ...mono, color: '#8f8f89', minWidth: '2.5rem' }}>
                       {String(index + 1).padStart(2, '0')}
                     </Typography>
                     <Typography

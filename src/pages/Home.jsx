@@ -23,13 +23,14 @@ import {
 } from '@mui/icons-material';
 import TextReveal from '../components/TextReveal';
 import RevealSection from '../components/RevealSection';
+import SensorField from '../components/SensorField';
 
 const mono = {
   fontFamily: "'IBM Plex Mono', monospace",
   fontSize: '0.78rem',
   letterSpacing: '0.06em',
   textTransform: 'uppercase',
-  color: '#8a8a85',
+  color: '#6b6b67',
 };
 
 const displayFont = "'Pixelify Sans', sans-serif";
@@ -78,7 +79,6 @@ export default function Home() {
 
   const verticals = [
     { label: 'Healthcare & elder care', highlight: true },
-    { label: 'Tactile gloves & assistive devices', highlight: true },
     { label: 'Home & hospitality' },
     { label: 'Skilled trades' },
     { label: 'Logistics & inspection' },
@@ -95,18 +95,20 @@ export default function Home() {
         borderBottom: '1px solid #1f1e1c',
         overflow: 'hidden',
       }}>
+        {/* A point field that brightens near the cursor, standing in for the
+            depth/contact sensing the site is actually about, instead of a photo. */}
+        <SensorField />
         <Box sx={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: 'url(/city_night_bg.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          filter: 'grayscale(1) brightness(0.6) contrast(1.1)',
+          background: 'radial-gradient(ellipse 60% 50% at 50% 20%, rgba(70,66,60,0.4) 0%, transparent 65%)',
+          pointerEvents: 'none',
         }} />
         <Box sx={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(180deg, rgba(19,18,17,0.35) 0%, rgba(19,18,17,0.8) 100%)',
+          background: 'linear-gradient(180deg, rgba(19,18,17,0.15) 0%, rgba(19,18,17,0.85) 100%)',
+          pointerEvents: 'none',
         }} />
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Stack spacing={4} sx={{ maxWidth: '780px', mx: 'auto', textAlign: 'center', alignItems: 'center' }}>
@@ -243,7 +245,7 @@ export default function Home() {
                 Real hands. Real environments. Real force.
               </Typography>
               <Typography sx={{ color: '#54544f', fontFamily: bodyFont, fontSize: '1.02rem', lineHeight: 1.8 }}>
-                Captured during ordinary task performance: kitchens, workshops, service counters, care settings. Frame-synchronized. Quality-checked before delivery.
+                Captured during ordinary task performance: kitchens, workshops, service counters, care settings. Wearable rigs, including tactile gloves, log contact force directly at the hand. Frame-synchronized. Quality-checked before delivery.
               </Typography>
             </Box>
           </RevealSection>
@@ -263,7 +265,7 @@ export default function Home() {
                 Manipulation is everywhere. So are we.
               </Typography>
               <Typography sx={{ color: '#54544f', fontFamily: bodyFont, fontSize: '1.02rem', lineHeight: 1.8 }}>
-                Our near-term focus is healthcare: elder care, caregiving support, and tactile gloves and other assistive devices, where force and contact data is hardest to get and matters most.
+                Our near-term focus is healthcare: elder care and caregiving support, where force and contact data is hardest to get and matters most.
               </Typography>
             </Box>
 
@@ -290,26 +292,27 @@ export default function Home() {
       </Box>
 
       {/* 6. Dataset */}
-      <Box id="dataset" sx={{ py: { xs: 10, md: 14 }, backgroundColor: '#f3f3f0', borderTop: '1px solid #e4e4e1', borderBottom: '1px solid #e4e4e1' }}>
+      <Box id="dataset" sx={{ py: { xs: 5, md: 6 }, backgroundColor: '#f3f3f0', borderTop: '1px solid #e4e4e1', borderBottom: '1px solid #e4e4e1' }}>
         <Container maxWidth="lg">
-          <RevealSection selector=".dataset-reveal" once y={24}>
-            <Box className="dataset-reveal" sx={{ maxWidth: '760px' }}>
-              <Eyebrow index="05" label="Dataset" />
-              <Typography
-                variant="h2"
-                sx={{ color: '#171717', fontFamily: displayFont, fontWeight: 500, fontSize: { xs: '1.7rem', md: '2.3rem' }, lineHeight: 1.3, mb: 3 }}
-              >
-                Dataset
-              </Typography>
-              <Typography sx={{ color: '#54544f', fontFamily: bodyFont, fontSize: '1.02rem', lineHeight: 1.8, mb: 3 }}>
-                Our first multimodal manipulation dataset, built around healthcare and elder care tasks, is in progress.
-              </Typography>
-              <Box sx={{ display: 'inline-flex' }}>
+          <RevealSection selector=".dataset-reveal" once y={16}>
+            <Stack
+              className="dataset-reveal"
+              direction={{ xs: 'column', sm: 'row' }}
+              spacing={{ xs: 2, sm: 3 }}
+              sx={{ alignItems: { xs: 'flex-start', sm: 'center' }, justifyContent: 'space-between' }}
+            >
+              <Stack direction="row" spacing={2.5} sx={{ alignItems: 'baseline', flexWrap: 'wrap' }}>
+                <Typography sx={{ ...mono, mb: 0 }}>05 / Dataset</Typography>
+                <Typography sx={{ color: '#54544f', fontFamily: bodyFont, fontSize: '0.98rem', lineHeight: 1.7 }}>
+                  Our first dataset, built around healthcare and elder care tasks, is in progress.
+                </Typography>
+              </Stack>
+              <Box sx={{ display: 'inline-flex', flexShrink: 0 }}>
                 <Typography sx={{ ...mono, color: '#171717', border: '1px solid #171717', borderRadius: '999px', px: 2, py: 0.75 }}>
                   Coming soon
                 </Typography>
               </Box>
-            </Box>
+            </Stack>
           </RevealSection>
         </Container>
       </Box>

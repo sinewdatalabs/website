@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
 
 import Layout from './components/Layout';
 import Home from './pages/Home';
-import Blog from './pages/Blog';
-import BlogPipeline from './pages/BlogPipeline';
+
+// Blog pages pull in their own video/post data and aren't needed on first
+// paint of the home page, so they're split into their own chunk.
+const Blog = lazy(() => import('./pages/Blog'));
+const BlogPipeline = lazy(() => import('./pages/BlogPipeline'));
 
 const displayFont = "'Pixelify Sans', 'Inter', sans-serif";
 
@@ -98,14 +101,16 @@ function App() {
     <ThemeProvider theme={lightTheme}>
       <CssBaseline />
       <BrowserRouter basename={import.meta.env.BASE_URL}>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="blog" element={<Blog />} />
-            <Route path="blog/data-pipeline" element={<BlogPipeline />} />
-            <Route path="*" element={<Home />} />
-          </Route>
-        </Routes>
+        <Suspense fallback={null}>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="blog" element={<Blog />} />
+              <Route path="blog/data-pipeline" element={<BlogPipeline />} />
+              <Route path="*" element={<Home />} />
+            </Route>
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </ThemeProvider>
   );

@@ -314,11 +314,11 @@ export default function Layout() {
             <Typography
               component="a"
               href="mailto:sinew.datalabs@gmail.com"
-              sx={{ ...monoLabel, color: '#8a8a85', textDecoration: 'none', '&:hover': { color: '#171717' } }}
+              sx={{ ...monoLabel, color: '#6b6b67', textDecoration: 'none', '&:hover': { color: '#171717' } }}
             >
               sinew.datalabs@gmail.com
             </Typography>
-            <Typography sx={{ ...monoLabel, color: '#8a8a85' }}>
+            <Typography sx={{ ...monoLabel, color: '#6b6b67' }}>
               © {new Date().getFullYear()} {BRAND_NAME}
             </Typography>
           </Stack>

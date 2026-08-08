@@ -6,7 +6,7 @@ const mono = {
   fontSize: '0.72rem',
   letterSpacing: '0.06em',
   textTransform: 'uppercase',
-  color: '#8a8a85',
+  color: '#6b6b67',
 };
 
 /**
