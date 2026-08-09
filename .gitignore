@@ -17,7 +17,6 @@ dist-ssr
 src/assets/*.mp4
 
 # Editor directories and files
-.vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
@@ -26,3 +25,4 @@ src/assets/*.mp4
 *.njsproj
 *.sln
 *.sw?
+config.bat

@@ -5,9 +5,9 @@
   "type": "module",
   "homepage": "https://github.com/sinewdatalabs/website",
   "scripts": {
-    "dev": "vite",
-    "start": "vite",
-    "build": "vite build",
+    "dev": "node init && vite",
+    "start": "node init && vite",
+    "build": "node init && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",

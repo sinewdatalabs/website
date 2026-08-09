@@ -200,9 +200,8 @@ export default function BlogTactile() {
                 If you're a VC and scale is the part you'd want to dig into
               </Typography>
               <Typography sx={{ color: '#9c9c96', fontFamily: bodyFont, fontSize: '0.98rem', lineHeight: 1.7, mb: 3 }}>
-                We're pre-seed, raising to scale data collection, build out the capture rigs, and fund the
-                research behind them. We'd rather talk numbers than adjectives, reach out and we can walk through
-                where it stands today and what it looks like at the volume physical AI actually needs.
+                We'd rather talk numbers than adjectives. Reach out and we can walk through the capture network,
+                where it stands today, and what it looks like at the volume physical AI actually needs.
               </Typography>
               <Button
                 component="a"
