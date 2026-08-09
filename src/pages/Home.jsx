@@ -444,6 +444,9 @@ export default function Home() {
             <Typography variant="h5" sx={{ color: '#fafaf8', fontFamily: displayFont, fontWeight: 500, fontSize: '1.6rem', mb: 1.5 }}>
               Get in touch
             </Typography>
+            <Typography sx={{ color: '#9c9c96', mb: 3, lineHeight: 1.6, fontSize: '0.95rem', fontFamily: bodyFont }}>
+              We're pre-seed and building the capture network now. Customer, contributor, or investor, say hello.
+            </Typography>
             <Box
               component="a"
               href="mailto:sinew.datalabs@gmail.com"
