@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Suspense, lazy, useState } from 'react';
 import {
   Container,
   Typography,
@@ -24,6 +24,10 @@ import {
 import TextReveal from '../components/TextReveal';
 import RevealSection from '../components/RevealSection';
 import { PixelMailIcon } from '../components/PixelIcons';
+
+// tsParticles pulls in its own engine, split into its own chunk instead of
+// shipping it on every route.
+const HeroParticles = lazy(() => import('../components/HeroParticles'));
 
 const mono = {
   fontFamily: "'IBM Plex Mono', monospace",
@@ -102,6 +106,9 @@ export default function Home() {
         borderBottom: '1px solid #1f1e1c',
         overflow: 'hidden',
       }}>
+        <Suspense fallback={null}>
+          <HeroParticles />
+        </Suspense>
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Stack spacing={4} sx={{ maxWidth: '780px', mx: 'auto', textAlign: 'center', alignItems: 'center' }}>
             <Typography sx={{ ...mono, color: '#6e6e69', mx: 'auto' }}>
