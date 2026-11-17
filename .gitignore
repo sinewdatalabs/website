@@ -25,4 +25,3 @@ src/assets/*.mp4
 *.njsproj
 *.sln
 *.sw?
-config.bat
